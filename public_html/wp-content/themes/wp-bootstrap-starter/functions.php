@@ -392,13 +392,15 @@ function append_click_stats($content) {
     $link_total = get_post_meta($post_id, 'link_click_total', true);
     $link_month = get_post_meta($post_id, 'link_click_' . date('Y_m'), true);
 
+    // Робимо блок ширшим за контейнер, щоб він відповідав ширині контенту навіть на мобільних пристроях.
     $block = '
-    <div class="container mt-4">
-        <div class="card shadow-sm">
+    <div class="mt-4">
+        <div class="card shadow-sm w-100">
             <div class="card-body">
-                <h5 class="card-title">Статистика кліків по рекламці:</h5>
+                <!-- Заголовок збільшуємо на 2px, щоб виділявся серед іншого тексту таблиці -->
+                <h5 class="card-title mb-3" style="font-size: 18px;">Статистика кліків по рекламці:</h5>
                 <p class="card-text mb-1">📞 Телефон за місяць: <strong>' . intval($tel_month) . '</strong>, всього: <strong>' . intval($tel_total) . '</strong></p>
-                <p class="card-text">Інші посилання за місяць: <strong>' . intval($link_month) . '</strong>, всього: <strong>' . intval($link_total) . '</strong></p>
+                <p class="card-text mb-0">Інші посилання за місяць: <strong>' . intval($link_month) . '</strong>, всього: <strong>' . intval($link_total) . '</strong></p>
             </div>
         </div>
     </div>';

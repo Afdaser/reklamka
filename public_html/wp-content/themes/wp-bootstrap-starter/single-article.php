@@ -24,10 +24,11 @@ get_header(); ?>
                         $month_views = intval(get_post_meta($post_id, 'article_view_' . date('Y_m'), true));
                         $total_views = intval(get_post_meta($post_id, 'article_view_total', true));
                         ?>
-                        <div class="container mt-4">
-                            <div class="card shadow-sm">
+                        <div class="mt-4">
+                            <div class="card shadow-sm w-100">
                                 <div class="card-body">
-                                    <h5 class="card-title mb-3">Статистика переглядів статті:</h5>
+                                    <!-- Заголовок робимо на 2px більшим за текст статистики для кращої читабельності на мобільних -->
+                                    <h5 class="card-title mb-3" style="font-size: 18px;">Статистика переглядів статті:</h5>
                                     <!-- Лаконічний блок статистики переглядів зі смайликами для дружнього вигляду -->
                                     <p class="card-text mb-2">👁️ Переглядів за місяць: <strong><?php echo $month_views; ?></strong></p>
                                     <p class="card-text mb-0">📖 Всього переглядів: <strong><?php echo $total_views; ?></strong></p>
