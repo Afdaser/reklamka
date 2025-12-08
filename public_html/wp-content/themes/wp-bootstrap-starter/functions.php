@@ -355,12 +355,38 @@ function track_link_click_ajax() {
 add_action('wp_ajax_track_link_click', 'track_link_click_ajax');
 add_action('wp_ajax_nopriv_track_link_click', 'track_link_click_ajax');
 
+// Підрахунок переглядів для шаблону статті
+function track_article_view($post_id) {
+    if (!$post_id) {
+        return;
+    }
+
+    // Працюємо лише для записів з шаблоном статті
+    if (get_page_template_slug($post_id) !== 'single-article.php') {
+        return;
+    }
+
+    $total_views = get_post_meta($post_id, 'article_view_total', true);
+    $total_views = $total_views ? intval($total_views) + 1 : 1;
+    update_post_meta($post_id, 'article_view_total', $total_views);
+
+    $month_key = 'article_view_' . date('Y_m');
+    $monthly_views = get_post_meta($post_id, $month_key, true);
+    $monthly_views = $monthly_views ? intval($monthly_views) + 1 : 1;
+    update_post_meta($post_id, $month_key, $monthly_views);
+}
+
 // === Вивід статистики ===
 
 function append_click_stats($content) {
     if (!is_singular('post')) return $content;
 
     $post_id = get_the_ID();
+    // Пропускаємо шаблон статті, щоб показувати там власну статистику
+    if (get_page_template_slug($post_id) === 'single-article.php') {
+        return $content;
+    }
+
     $tel_total = get_post_meta($post_id, 'tel_click_total', true);
     $tel_month = get_post_meta($post_id, 'tel_click_' . date('Y_m'), true);
     $link_total = get_post_meta($post_id, 'link_click_total', true);
