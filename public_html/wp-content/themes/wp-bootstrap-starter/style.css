@@ -220,26 +220,40 @@ h1, h2, h3, h4, h5, h6 {
   margin-top: 24px;
   margin-bottom: 15px;
 }
-h1 {
-  font-size: 32px;
-  padding-bottom: 10px;
-}
-h2 {
-  font-size: 24px;
-  padding-bottom: 0.3em;
-  line-height: 1.25;
-}
-h3 {
-  font-size: 18px;
-  line-height: 25px;
-}
-h4 {
-  font-size: 16px;
-  line-height: 20px;
-}
-h5 {
-  font-size: 14px;
-  line-height: 17.5px;
+h1 { 
+  font-size: 32px; 
+  padding-bottom: 10px; 
+} 
+h2 { 
+  font-size: 24px; 
+  padding-bottom: 0.3em; 
+  line-height: 1.25; 
+} 
+h3 { 
+  font-size: 18px; 
+  line-height: 25px; 
+} 
+h4 { 
+  font-size: 16px; 
+  line-height: 20px; 
+} 
+h5 { 
+  font-size: 14px; 
+  line-height: 17.5px; 
+} 
+
+/* Посилання в заголовках мають виділятися навіть на синьому фоні */
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a { 
+  font-weight: 700; 
+  text-decoration: underline; 
+  text-decoration-color: currentColor; 
+  text-decoration-thickness: 0.12em; 
+  text-underline-offset: 0.18em; 
 }
 
 p {
