@@ -1,0 +1,81 @@
+/* Загальні стилі блоку слайдера галереї. */
+.gsb-slider {
+margin: 1.5rem auto;
+text-align: center;
+}
+
+.gsb-main {
+background: #f5f7fa;
+padding: 12px;
+min-height: 320px;
+display: flex;
+align-items: center;
+justify-content: center;
+border-radius: 18px;
+box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.gsb-main img {
+max-height: 480px;
+object-fit: cover;
+}
+
+.gsb-nav {
+position: absolute;
+top: 50%;
+transform: translateY(-50%);
+width: 42px;
+height: 42px;
+border-radius: 50%;
+box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+opacity: 0.9;
+}
+
+.gsb-prev {
+left: 12px;
+}
+
+.gsb-next {
+right: 12px;
+}
+
+.gsb-thumbs {
+gap: 10px;
+padding: 6px 2px;
+overflow-x: auto;
+}
+
+.gsb-thumb-wrapper {
+flex: 0 0 auto;
+}
+
+.gsb-thumb {
+width: 96px;
+height: 64px;
+object-fit: cover;
+cursor: pointer;
+opacity: 0.75;
+border-radius: 10px;
+box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+transition: all 0.2s ease-in-out;
+border: 2px solid transparent;
+}
+
+.gsb-thumb:hover,
+.gsb-thumb.active {
+opacity: 1;
+border-color: #007bff;
+box-shadow: 0 6px 14px rgba(0, 123, 255, 0.35);
+}
+
+.alignleft {
+text-align: left;
+}
+
+.aligncenter {
+text-align: center;
+}
+
+.alignright {
+text-align: right;
+}
