@@ -1,0 +1,12 @@
+/* Стилі для редактора блоків. */
+.gsb-slider {
+max-width: 1100px;
+}
+
+.gsb-main {
+min-height: 260px;
+}
+
+.gsb-thumb {
+border: 1px solid #e0e0e0;
+}
