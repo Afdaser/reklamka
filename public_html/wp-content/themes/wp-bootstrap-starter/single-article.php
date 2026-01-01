@@ -15,11 +15,12 @@ get_header(); ?>
 
                 <?php
                 while ( have_posts() ) : the_post();
-                        // Рахуємо перегляд лише для цього шаблону
+                        // Рахуємо перегляд лише для цього шаблону.
                         track_article_view(get_the_ID());
 
                         get_template_part( 'template-parts/content', get_post_format() );
 
+                        // Отримуємо дані переглядів для поточного запису.
                         $post_id = get_the_ID();
                         $month_views = intval(get_post_meta($post_id, 'article_view_' . date('Y_m'), true));
                         $total_views = intval(get_post_meta($post_id, 'article_view_total', true));
@@ -37,8 +38,15 @@ get_header(); ?>
                         <?php
                             the_post_navigation();
 
-                        // Якщо коментарі відкриті або є принаймні один, показуємо їх
+                        // Блок коментарів для цього шаблону "стаття".
+                        // Якщо коментарі відкриті або є принаймні один, показуємо їх.
                         if ( comments_open() || get_comments_number() ) :
+                                ?>
+                                <div class="container mt-4">
+                                    <!-- Заголовок секції коментарів для кращої навігації на сторінці -->
+                                    <h3 class="mb-3">Коментарі</h3>
+                                </div>
+                                <?php
                                 comments_template();
                         endif;
 
