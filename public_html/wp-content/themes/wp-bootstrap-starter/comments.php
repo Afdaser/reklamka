@@ -1,9 +1,9 @@
 <?php
 /**
- * The template for displaying comments
+ * Шаблон для відображення коментарів.
  *
- * This is the template that displays the area of the page that contains both the current comments
- * and the comment form.
+ * Цей шаблон показує область сторінки, що містить як наявні коментарі,
+ * так і форму коментування.
  *
  * @link https://codex.wordpress.org/Template_Hierarchy
  *
@@ -11,9 +11,9 @@
  */
 
 /*
- * If the current post is protected by a password and
- * the visitor has not yet entered the password we will
- * return early without loading the comments.
+ * Якщо поточний запис захищений паролем і
+ * відвідувач ще не ввів пароль, виходимо раніше
+ * без завантаження коментарів.
  */
 if ( post_password_required() ) {
 	return;
@@ -23,7 +23,7 @@ if ( post_password_required() ) {
 <div id="comments" class="comments-area">
 
     <?php
-    // You can start editing here -- including this comment!
+    // Тут можна починати редагування — включно з цим коментарем!
     if ( have_comments() ) : ?>
 
         <h2 class="comments-title">
@@ -32,13 +32,13 @@ if ( post_password_required() ) {
             if ( '1' === $comments_number ) {
                 printf(
 					/* translators: 1: title. */
-					esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'wp-bootstrap-starter' ),
+					esc_html__( 'Одна думка про &ldquo;%1$s&rdquo;', 'wp-bootstrap-starter' ),
 					'<span>' . esc_html(get_the_title()) . '</span>'
 				);
             } else {
                 printf( // WPCS: XSS OK.
 					/* translators: 1: comment count number, 2: title. */
-					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $underscore_comment_count, 'comments title', 'wp-bootstrap-starter' ) ),
+					esc_html( _nx( '%1$s думка про &ldquo;%2$s&rdquo;', '%1$s думок про &ldquo;%2$s&rdquo;', $underscore_comment_count, 'comments title', 'wp-bootstrap-starter' ) ),
 					esc_html( number_format_i18n( $underscore_comment_count ) ),
 					'<span>' . esc_html( get_the_title() ) . '</span>'
 				);
@@ -47,17 +47,17 @@ if ( post_password_required() ) {
         </h2><!-- .comments-title -->
 
 
-        <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
+        <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Чи є коментарі для навігації? ?>
             <nav id="comment-nav-above" class="navigation comment-navigation" role="navigation">
-                <h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'wp-bootstrap-starter' ); ?></h2>
+                <h2 class="screen-reader-text"><?php esc_html_e( 'Навігація коментарями', 'wp-bootstrap-starter' ); ?></h2>
                 <div class="nav-links">
 
-                    <div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'wp-bootstrap-starter' ) ); ?></div>
-                    <div class="nav-next"><?php next_comments_link( esc_html__( 'Newer Comments', 'wp-bootstrap-starter' ) ); ?></div>
+                    <div class="nav-previous"><?php previous_comments_link( esc_html__( 'Старіші коментарі', 'wp-bootstrap-starter' ) ); ?></div>
+                    <div class="nav-next"><?php next_comments_link( esc_html__( 'Новіші коментарі', 'wp-bootstrap-starter' ) ); ?></div>
 
                 </div><!-- .nav-links -->
             </nav><!-- #comment-nav-above -->
-        <?php endif; // Check for comment navigation. ?>
+        <?php endif; // Перевірка навігації коментарями. ?>
 
         <ul class="comment-list">
             <?php
@@ -65,49 +65,47 @@ if ( post_password_required() ) {
             ?>
         </ul><!-- .comment-list -->
 
-        <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Are there comments to navigate through? ?>
+        <?php if ( get_comment_pages_count() > 1 && get_option( 'page_comments' ) ) : // Чи є коментарі для навігації? ?>
             <nav id="comment-nav-below" class="navigation comment-navigation" role="navigation">
-                <h2 class="screen-reader-text"><?php esc_html_e( 'Comment navigation', 'wp-bootstrap-starter' ); ?></h2>
+                <h2 class="screen-reader-text"><?php esc_html_e( 'Навігація коментарями', 'wp-bootstrap-starter' ); ?></h2>
                 <div class="nav-links">
 
-                    <div class="nav-previous"><?php previous_comments_link( esc_html__( 'Older Comments', 'wp-bootstrap-starter' ) ); ?></div>
-                    <div class="nav-next"><?php next_comments_link( esc_html__( 'Newer Comments', 'wp-bootstrap-starter' ) ); ?></div>
+                    <div class="nav-previous"><?php previous_comments_link( esc_html__( 'Старіші коментарі', 'wp-bootstrap-starter' ) ); ?></div>
+                    <div class="nav-next"><?php next_comments_link( esc_html__( 'Новіші коментарі', 'wp-bootstrap-starter' ) ); ?></div>
 
                 </div><!-- .nav-links -->
             </nav><!-- #comment-nav-below -->
             <?php
-        endif; // Check for comment navigation.
+        endif; // Перевірка навігації коментарями.
 
-    endif; // Check for have_comments().
+    endif; // Перевірка наявності коментарів.
 
 
-    // If comments are closed and there are comments, let's leave a little note, shall we?
+    // Якщо коментарі закриті, але вони є, покажемо невеличке повідомлення.
     if ( ! comments_open() && get_comments_number() && post_type_supports( get_post_type(), 'comments' ) ) : ?>
 
-        <p class="no-comments"><?php esc_html_e( 'Comments are closed.', 'wp-bootstrap-starter' ); ?></p>
+        <p class="no-comments"><?php esc_html_e( 'Коментування закрито.', 'wp-bootstrap-starter' ); ?></p>
         <?php
     endif; ?>
 
     <?php comment_form( $args = array(
-        'id_form'           => 'commentform',  // that's the wordpress default value! delete it or edit it ;)
+        'id_form'           => 'commentform',  // Значення WordPress за замовчуванням — можна видалити або змінити ;)
         'id_submit'         => 'commentsubmit',
-        'title_reply'       => __( 'Leave a Reply', 'wp-bootstrap-starter' ),  // that's the wordpress default value! delete it or edit it ;)
+        'title_reply'       => __( 'Залишити відповідь', 'wp-bootstrap-starter' ),  // Значення WordPress за замовчуванням — можна видалити або змінити ;)
 		/* translators: 1: Reply Specific User */
-        'title_reply_to'    => __( 'Leave a Reply to %s', 'wp-bootstrap-starter' ),  // that's the wordpress default value! delete it or edit it ;)
-        'cancel_reply_link' => __( 'Cancel Reply', 'wp-bootstrap-starter' ),  // that's the wordpress default value! delete it or edit it ;)
-        'label_submit'      => __( 'Post Comment', 'wp-bootstrap-starter' ),  // that's the wordpress default value! delete it or edit it ;)
+        'title_reply_to'    => __( 'Залишити відповідь для %s', 'wp-bootstrap-starter' ),  // Значення WordPress за замовчуванням — можна видалити або змінити ;)
+        'cancel_reply_link' => __( 'Скасувати відповідь', 'wp-bootstrap-starter' ),  // Значення WordPress за замовчуванням — можна видалити або змінити ;)
+        'label_submit'      => __( 'Опублікувати коментар', 'wp-bootstrap-starter' ),  // Значення WordPress за замовчуванням — можна видалити або змінити ;)
 
-        'comment_field' =>  '<p><textarea placeholder="Start typing..." id="comment" class="form-control" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
+        // Підказка в полі введення та стилі Bootstrap для текстової області.
+        'comment_field' =>  '<p><textarea placeholder="Почніть вводити..." id="comment" class="form-control" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>',
 
-        'comment_notes_after' => '<p class="form-allowed-tags">' .
-            __( 'You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:', 'wp-bootstrap-starter' ) .
-            '</p><div class="alert alert-info">' . allowed_tags() . '</div>'
+        // Прибираємо підказку про дозволені HTML-теги з форми коментаря.
+        'comment_notes_after' => ''
 
-        // So, that was the needed stuff to have bootstrap basic styles for the form elements and buttons
-
-        // Basically you can edit everything here!
-        // Checkout the docs for more: http://codex.wordpress.org/Function_Reference/comment_form
-        // Another note: some classes are added in the bootstrap-wp.js - ckeck from line 1
+        // Тут можна редагувати всі налаштування форми.
+        // Документація: http://codex.wordpress.org/Function_Reference/comment_form
+        // Деякі класи додаються у bootstrap-wp.js — перевірте з рядка 1.
 
     ));
 
