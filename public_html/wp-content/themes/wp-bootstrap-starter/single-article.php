@@ -15,8 +15,7 @@ get_header(); ?>
 
                 <?php
                 while ( have_posts() ) : the_post();
-                        // Рахуємо перегляд лише для цього шаблону.
-                        track_article_view(get_the_ID());
+                        // Перегляди рахуються через AJAX (обхід кешу).
 
                         get_template_part( 'template-parts/content', get_post_format() );
 

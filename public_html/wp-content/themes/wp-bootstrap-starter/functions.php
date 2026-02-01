@@ -376,6 +376,60 @@ function track_article_view($post_id) {
     update_post_meta($post_id, $month_key, $monthly_views);
 }
 
+// AJAX-рахунок переглядів для статей із шаблоном single-article.php.
+function track_article_view_ajax() {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'track_article_view')) {
+        wp_send_json_error('Invalid nonce');
+    }
+
+    if (!isset($_POST['post_id'])) {
+        wp_send_json_error('No post ID');
+    }
+
+    $post_id = intval($_POST['post_id']);
+    if (!$post_id) {
+        wp_send_json_error('Invalid post ID');
+    }
+
+    // Працюємо лише для записів з потрібним шаблоном, щоб уникнути сторонніх інкрементів.
+    if (get_page_template_slug($post_id) !== 'single-article.php') {
+        wp_send_json_error('Invalid template');
+    }
+
+    $total_views = get_post_meta($post_id, 'article_view_total', true);
+    $total_views = $total_views ? intval($total_views) + 1 : 1;
+    update_post_meta($post_id, 'article_view_total', $total_views);
+
+    $month_key = 'article_view_' . date('Y_m');
+    $monthly_views = get_post_meta($post_id, $month_key, true);
+    $monthly_views = $monthly_views ? intval($monthly_views) + 1 : 1;
+    update_post_meta($post_id, $month_key, $monthly_views);
+
+    wp_send_json_success('Article view updated');
+}
+add_action('wp_ajax_track_article_view', 'track_article_view_ajax');
+add_action('wp_ajax_nopriv_track_article_view', 'track_article_view_ajax');
+
+// Підключаємо скрипт для точного підрахунку переглядів через AJAX (обхід кешу).
+function enqueue_article_view_tracker() {
+    if (!is_singular('post')) {
+        return;
+    }
+
+    $post_id = get_the_ID();
+    if (!$post_id || get_page_template_slug($post_id) !== 'single-article.php') {
+        return;
+    }
+
+    wp_enqueue_script('article-view-tracker', get_template_directory_uri() . '/inc/assets/js/article-view-tracker.js', array(), '1.0.0', true);
+    wp_localize_script('article-view-tracker', 'articleViewTracker', array(
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'postId' => $post_id,
+        'nonce' => wp_create_nonce('track_article_view'),
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_article_view_tracker');
+
 // === Вивід статистики ===
 
 function append_click_stats($content) {
@@ -406,4 +460,3 @@ function append_click_stats($content) {
     return $content . $block;
 }
 add_filter('the_content', 'append_click_stats');
-
