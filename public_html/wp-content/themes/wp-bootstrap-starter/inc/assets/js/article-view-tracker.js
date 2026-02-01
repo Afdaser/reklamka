@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Використовуємо fetch для простого та надійного інкременту.
     const payload = new URLSearchParams({
-        action: 'track_article_view',
+        action: 'track_view',
         post_id: articleViewTracker.postId,
         nonce: articleViewTracker.nonce,
     });
