@@ -355,26 +355,71 @@ function track_link_click_ajax() {
 add_action('wp_ajax_track_link_click', 'track_link_click_ajax');
 add_action('wp_ajax_nopriv_track_link_click', 'track_link_click_ajax');
 
-// Підрахунок переглядів для шаблону статті
-function track_article_view($post_id) {
-    if (!$post_id) {
-        return;
-    }
-
-    // Працюємо лише для записів з шаблоном статті
-    if (get_page_template_slug($post_id) !== 'single-article.php') {
-        return;
-    }
-
-    $total_views = get_post_meta($post_id, 'article_view_total', true);
+// Допоміжна функція для інкременту переглядів (місячних і загальних).
+function increment_view_meta($post_id, $prefix) {
+    $total_key = $prefix . '_total';
+    $total_views = get_post_meta($post_id, $total_key, true);
     $total_views = $total_views ? intval($total_views) + 1 : 1;
-    update_post_meta($post_id, 'article_view_total', $total_views);
+    update_post_meta($post_id, $total_key, $total_views);
 
-    $month_key = 'article_view_' . date('Y_m');
+    $month_key = $prefix . '_' . date('Y_m');
     $monthly_views = get_post_meta($post_id, $month_key, true);
     $monthly_views = $monthly_views ? intval($monthly_views) + 1 : 1;
     update_post_meta($post_id, $month_key, $monthly_views);
 }
+
+// AJAX-рахунок переглядів для всіх сторінок/записів (обхід кешу).
+function track_view_ajax() {
+    if (!isset($_POST['nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['nonce'])), 'track_view')) {
+        wp_send_json_error('Invalid nonce');
+    }
+
+    if (!isset($_POST['post_id'])) {
+        wp_send_json_error('No post ID');
+    }
+
+    $post_id = intval($_POST['post_id']);
+    if (!$post_id) {
+        wp_send_json_error('Invalid post ID');
+    }
+
+    $post = get_post($post_id);
+    if (!$post || $post->post_status !== 'publish') {
+        wp_send_json_error('Invalid post');
+    }
+
+    // Базові лічильники для всіх сторінок і записів.
+    increment_view_meta($post_id, 'view');
+
+    // Додатково оновлюємо старі ключі для шаблону статті, щоб не ламати статистику.
+    if (get_page_template_slug($post_id) === 'single-article.php') {
+        increment_view_meta($post_id, 'article_view');
+    }
+
+    wp_send_json_success('View updated');
+}
+add_action('wp_ajax_track_view', 'track_view_ajax');
+add_action('wp_ajax_nopriv_track_view', 'track_view_ajax');
+
+// Підключаємо скрипт для точного підрахунку переглядів через AJAX (обхід кешу).
+function enqueue_article_view_tracker() {
+    if (!is_singular()) {
+        return;
+    }
+
+    $post_id = get_the_ID();
+    if (!$post_id) {
+        return;
+    }
+
+    wp_enqueue_script('article-view-tracker', get_template_directory_uri() . '/inc/assets/js/article-view-tracker.js', array(), '1.1.0', true);
+    wp_localize_script('article-view-tracker', 'articleViewTracker', array(
+        'ajaxUrl' => admin_url('admin-ajax.php'),
+        'postId' => $post_id,
+        'nonce' => wp_create_nonce('track_view'),
+    ));
+}
+add_action('wp_enqueue_scripts', 'enqueue_article_view_tracker');
 
 // === Вивід статистики ===
 
@@ -406,4 +451,3 @@ function append_click_stats($content) {
     return $content . $block;
 }
 add_filter('the_content', 'append_click_stats');
-
