@@ -243,8 +243,6 @@ h5 {
 } 
 
 /* Посилання в заголовках мають виділятися навіть на синьому фоні */
-h1 a,
-h2 a,
 h3 a,
 h4 a,
 h5 a,
@@ -1052,4 +1050,9 @@ body:not(.theme-preset-active) footer#colophon {
   html {
     font-size: 75%;
   }
+}
+.wp-block-image figcaption {
+  margin-bottom:1em;
+  margin-top:.5em;
+  font-size: 1.2rem;
 }
